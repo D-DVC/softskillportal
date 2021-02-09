@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/create', [App\Http\Controllers\CharacterController::class, 'create'])->name('create');
 
@@ -26,3 +27,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::post('/createbase', [App\Http\Controllers\CharacterController::class, 'store'])->name('createbase');
+
+Route::get('/logout', [App\Http\Controllers\PageController::class, 'Logout'])->name('logout');
