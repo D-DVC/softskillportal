@@ -29,3 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/createbase', [App\Http\Controllers\CharacterController::class, 'store'])->name('createbase');
 
 Route::get('/logout', [App\Http\Controllers\PageController::class, 'Logout'])->name('logout');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
