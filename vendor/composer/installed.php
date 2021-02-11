@@ -1,12 +1,12 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-main',
+    'version' => 'dev-main',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => '6549915daf257cdcc916b6067452ae17ea144b11',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -440,12 +440,12 @@
     ),
     'laravel/laravel' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => '6549915daf257cdcc916b6067452ae17ea144b11',
     ),
     'laravel/sail' => 
     array (
@@ -473,6 +473,15 @@
       array (
       ),
       'reference' => 'a1f82c6283c8373ea1958b8a27c3d5c98cade351',
+    ),
+    'laravelcollective/html' => 
+    array (
+      'pretty_version' => 'v6.2.1',
+      'version' => '6.2.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ae15b9c4bf918ec3a78f092b8555551dd693fde3',
     ),
     'league/commonmark' => 
     array (
@@ -968,6 +977,15 @@
       array (
       ),
       'reference' => 'c6c1022351a901512170118436c764e473f6de8c',
+    ),
+    'spatie/laravel-permission' => 
+    array (
+      'pretty_version' => '4.0.0',
+      'version' => '4.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '7936ea9ebbd0d91877109dfeda1659fc4570a6cc',
     ),
     'swiftmailer/swiftmailer' => 
     array (
