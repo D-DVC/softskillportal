@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -36,6 +37,8 @@ Route::get('/logout', [App\Http\Controllers\PageController::class, 'Logout'])->n
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource('groups', GroupController::class);
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);

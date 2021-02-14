@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\group;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -23,7 +24,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
+        $data = User::orderBy('id','DESC')->paginate(5);;
         return view('user.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -36,8 +37,10 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
-        return view('user.create',compact('roles'));
+        $groups = group::pluck('name','name')->all();
+        return view('user.create',compact('roles', 'groups'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -51,7 +54,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required',
+            'groups' => 'required'
         ]);
 
         $input = $request->all();
@@ -63,6 +67,12 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success','User created successfully');
     }
+
+    public function StoreList(Request $request)
+    {
+
+    }
+
 
     /**
      * Display the specified resource.
@@ -86,9 +96,11 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
+        $group = group::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
+        $userGroup = $user->groups->pluck('name','name')->all();
 
-        return view('user.edit',compact('user','roles','userRole'));
+        return view('user.edit',compact('user','roles','userRole', 'group' , 'userGroup'));
     }
 
     /**
@@ -104,10 +116,11 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required',
         ]);
 
         $input = $request->all();
+
         if(!empty($input['password'])){
             $input['password'] = Hash::make($input['password']);
         }else{
@@ -115,6 +128,15 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
+
+        $user->groups()->detach();
+        foreach ($input['groups'] as $group)
+        {
+            $group_id = DB::table('groups')->where('name',$group)->pluck('id');
+
+            $user->groups()->attach($group_id);
+
+        }
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
 
