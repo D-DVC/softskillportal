@@ -68,11 +68,6 @@ class UserController extends Controller
             ->with('success','User created successfully');
     }
 
-    public function StoreList(Request $request)
-    {
-
-    }
-
 
     /**
      * Display the specified resource.
@@ -157,5 +152,55 @@ class UserController extends Controller
         User::find($id)->delete();
         return redirect()->route('users.index')
             ->with('success','User deleted successfully');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Application|Factory|View|Response
+     */
+    public function CreateList()
+    {
+        $groups = group::pluck('name','name')->all();
+        return view('user.createList',compact('groups'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function StoreList(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'groups' => 'required'
+        ]);
+        $input = $request->all();
+        $students = str_replace( ' ', '', explode(',', $input['name']));
+        foreach ($students as $student)
+        {
+            $user = User::create([
+                'name' => $student,
+                'email' => $student . "@mydavinci.nl",
+                'password' => Hash::make('Welkom123'),
+                ]);
+
+            $user->assignRole($request->input('roles'));
+
+            foreach ($input['groups'] as $group)
+            {
+                $group_id = DB::table('groups')->where('name',$group)->pluck('id');
+
+                $user->groups()->attach($group_id);
+
+            }
+
+        }
+
+        return redirect()->route('users.index')
+            ->with('success','User created successfully');
+
     }
 }
