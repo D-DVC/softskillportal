@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -36,6 +37,11 @@ Route::get('/logout', [App\Http\Controllers\PageController::class, 'Logout'])->n
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/users/createlist', [App\Http\Controllers\UserController::class, 'CreateList'])->name('createList');
+Route::post('/users/storelist', [App\Http\Controllers\UserController::class, 'StoreList'])->name('storeList');
+
+Route::resource('groups', GroupController::class);
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);

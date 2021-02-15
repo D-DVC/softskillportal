@@ -9,6 +9,8 @@
             </div>
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ route('users.create') }}"> Create New User</a>
+                <a class="btn btn-success" href="{{ route('groups.index') }}"> Show Groups</a>
+                <a class="btn btn-success" href="{{ route('createList') }}">Sing in students</a>
             </div>
         </div>
     </div>
@@ -26,6 +28,7 @@
             <th>No</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Group</th>
             <th>Roles</th>
             <th width="280px">Action</th>
         </tr>
@@ -34,6 +37,14 @@
                 <td>{{ ++$i }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
+                <td>
+                    @foreach ($user->groups as $group)
+
+                        @if($group->pivot->user_id === $user->id)
+                            {{ $group->name }}
+                        @endif
+                    @endforeach
+                </td>
                 <td>
                     @if(!empty($user->getRoleNames()))
                         @foreach($user->getRoleNames() as $v)
