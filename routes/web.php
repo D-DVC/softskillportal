@@ -38,6 +38,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
 Route::get('/users/createlist', [App\Http\Controllers\UserController::class, 'CreateList'])->name('createList');
 Route::post('/users/storelist', [App\Http\Controllers\UserController::class, 'StoreList'])->name('storeList');
 
@@ -46,4 +47,6 @@ Route::resource('groups', GroupController::class);
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::get('/users/createlist', [App\Http\Controllers\UserController::class, 'CreateList'])->name('createList');
+    Route::post('/users/storelist', [App\Http\Controllers\UserController::class, 'StoreList'])->name('storeList');
 });

@@ -54,12 +54,6 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Role:</strong>
-            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
             <strong>group:</strong>
             {!! Form::select('groups[]', $groups,[], array('class' => 'form-control','multiple')) !!}
         </div>
