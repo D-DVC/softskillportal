@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -21,25 +22,33 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
     public function index(Request $request)
     {
-        $data = User::orderBy('id', 'DESC')->paginate(5);;
-        return view('user.index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $user = Auth::user();
+        if ($user->getRoleNames()[0] === 'Admin') {
+            $data = User::orderBy('id', 'DESC')->paginate(5);;
+            return view('user.index', compact('data'))
+                ->with('i', ($request->input('page', 1) - 1) * 5);
+        }
+        return Redirect::back()->with('danger', 'U heeft niet de juiste rechten om deze pagina te bezoeken');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
-        $groups = group::pluck('name', 'name')->all();
-        return view('user.create', compact('roles', 'groups'));
+        $user = Auth::user();
+        if ($user->getRoleNames()[0] === 'Admin') {
+            $roles = Role::pluck('name', 'name')->all();
+            $groups = group::pluck('name', 'name')->all();
+            return view('user.create', compact('roles', 'groups'));
+        }
+        return Redirect::back()->with('danger', 'U heeft niet de juiste rechten om deze pagina te bezoeken');
     }
 
 
@@ -74,7 +83,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
     public function show($id)
     {
@@ -86,17 +95,21 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all();
-        $group = group::pluck('name', 'name')->all();
-        $userRole = $user->roles->pluck('name', 'name')->all();
-        $userGroup = $user->groups->pluck('name', 'name')->all();
+        $user = Auth::user();
+        if ($user->getRoleNames()[0] === 'Admin' || $user->id === (int)$id) {
+            $user = User::find($id);
+            $roles = Role::pluck('name', 'name')->all();
+            $group = group::pluck('name', 'name')->all();
+            $userRole = $user->roles->pluck('name', 'name')->all();
+            $userGroup = $user->groups->pluck('name', 'name')->all();
 
-        return view('user.edit', compact('user', 'roles', 'userRole', 'group', 'userGroup'));
+            return view('user.edit', compact('user', 'roles', 'userRole', 'group', 'userGroup'));
+        }
+        return Redirect::back()->with('danger', 'U heeft niet de juiste rechten om deze pagina te bezoeken');
     }
 
     /**
@@ -149,20 +162,28 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
+        $user = Auth::user();
+        if ($user->getRoleNames()[0] === 'Admin') {
+            User::find($id)->delete();
+            return redirect()->route('users.index')
+                ->with('success', 'User deleted successfully');
+        }
+        return Redirect::back()->with('danger', 'U heeft niet de juiste rechten om deze pagina te bezoeken');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Application|Factory|View|Response
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
     public function CreateList()
     {
-        $groups = group::pluck('name', 'name')->all();
-        return view('user.createList', compact('groups'));
+        $user = Auth::user();
+        if ($user->getRoleNames()[0] === 'Admin') {
+            $groups = group::pluck('name', 'name')->all();
+            return view('user.createList', compact('groups'));
+        }
+        return Redirect::back()->with('danger', 'U heeft niet de juiste rechten om deze pagina te bezoeken');
     }
 
     /**

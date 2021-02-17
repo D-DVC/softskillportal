@@ -3,10 +3,10 @@
 @section('content')
     <div class="container">
         <div class="row border-bottom border-primary">
-            <div class="col-md-4 ">
+            <div class="col-md-6 ">
                 <h2>{{$user->name}}'s Profile</h2>
             </div>
-            <div class="col-md-3 offset-5">
+            <div class="col-md-4 offset-2">
                 <a class="btn btn-secondary " href="{{ route('users.index') }}"> Back</a>
                 <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit Profile</a>
             </div>
