@@ -6,8 +6,8 @@
             <h2>Klas: {{$group->name}}</h2>
         </div>
         <div class="col-md-4 offset-2">
-            <a class="btn btn-secondary " href="{{ route('users.index') }}"> Back</a>
-            <a class="btn btn-primary" href="{{ route('users.edit',$group->id) }}">Edit Klas</a>
+            <a class="btn btn-secondary " href="{{ route('groups.index') }}"> Back</a>
+            <a class="btn btn-primary" href="{{ route('groups.edit',$group->id) }}">Edit Klas</a>
         </div>
     </div>
 
